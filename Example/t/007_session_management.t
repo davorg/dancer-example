@@ -2,10 +2,21 @@ use strict;
 use warnings;
 
 use Example;
+use Example::Util::SchemaLoader;
 use Test::More;
 use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
+
+Example::Util::SchemaLoader::load_schema();
+
+# Add a test user to the database
+my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db');
+$schema->resultset('User')->create({
+    username => 'testuser',
+    password => 'password',
+    email    => 'testuser@example.com',
+});
 
 my $app = Example->to_app;
 ok( is_coderef($app), 'Got app' );
