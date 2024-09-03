@@ -15,7 +15,7 @@ my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db')
 subtest 'Unique constraints' => sub {
     my $user1 = $schema->resultset('User')->create({
         username => 'uniqueuser',
-        password => 'password',
+        password => sha256_hex('password'),
         email    => 'uniqueuser@example.com',
     });
 
@@ -24,7 +24,7 @@ subtest 'Unique constraints' => sub {
     eval {
         my $user2 = $schema->resultset('User')->create({
             username => 'uniqueuser',
-            password => 'password',
+            password => sha256_hex('password'),
             email    => 'uniqueuser2@example.com',
         });
     };
@@ -33,7 +33,7 @@ subtest 'Unique constraints' => sub {
     eval {
         my $user3 = $schema->resultset('User')->create({
             username => 'uniqueuser3',
-            password => 'password',
+            password => sha256_hex('password'),
             email    => 'uniqueuser@example.com',
         });
     };
