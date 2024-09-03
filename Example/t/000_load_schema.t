@@ -2,9 +2,18 @@ use strict;
 use warnings;
 use DBI;
 use Test::More;
+use YAML::XS qw(LoadFile);
+
+# Load the configuration file
+my $config = LoadFile('Example/config.yml');
+
+# Extract connection details from the configuration file
+my $dsn = $config->{database}->{dsn};
+my $username = $config->{database}->{username};
+my $password = $config->{database}->{password};
 
 # Connect to the SQLite database
-my $dbh = DBI->connect("dbi:SQLite:dbname=Example/db/example.db", "", "", {
+my $dbh = DBI->connect($dsn, $username, $password, {
     RaiseError => 1,
     PrintError => 0,
     AutoCommit => 1,
