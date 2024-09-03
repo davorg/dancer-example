@@ -49,10 +49,10 @@ template: "simple"
 # Dancer apps on the same host then you will need to make sure 'cookie_name'
 # is different for each app.
 #
-#engines:
-#  session:
-#    Simple:
-#      cookie_name: testapp.session
+engines:
+  session:
+    Simple:
+      cookie_name: testapp.session
 #
 #engines:
 #  session:

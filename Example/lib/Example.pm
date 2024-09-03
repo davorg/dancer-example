@@ -16,7 +16,12 @@ sub get_schema {
 }
 
 get '/' => sub {
-    template 'index' => { 'title' => 'Example' };
+    my $user = session('user');
+    if ($user) {
+        template 'index' => { 'title' => 'Example', 'username' => $user->{username}, 'email' => $user->{email} };
+    } else {
+        template 'index' => { 'title' => 'Example' };
+    }
 };
 
 get '/register' => sub {
@@ -77,6 +82,9 @@ post '/login' => sub {
     if ($user && $user->password eq sha256_hex($password)) {
         # Log the result of the authentication attempt (success)
         debug "Authentication successful for username: $username"; # Pa940
+        
+        # Store user information in session
+        session user => { username => $user->username, email => $user->email };
         
         # Redirect to home page after successful login
         redirect '/';
