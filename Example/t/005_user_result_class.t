@@ -3,7 +3,6 @@ use warnings;
 
 use Test::More;
 use Example::Schema;
-use Digest::SHA qw(sha256_hex);
 use Example::Util::SchemaLoader;
 
 Example::Util::SchemaLoader::load_schema();
@@ -15,7 +14,7 @@ my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db')
 subtest 'Unique constraints' => sub {
     my $user1 = $schema->resultset('User')->create({
         username => 'uniqueuser',
-        password => sha256_hex('password'),
+        password => 'password',
         email    => 'uniqueuser@example.com',
     });
 
@@ -24,7 +23,7 @@ subtest 'Unique constraints' => sub {
     eval {
         my $user2 = $schema->resultset('User')->create({
             username => 'uniqueuser',
-            password => sha256_hex('password'),
+            password => 'password',
             email    => 'uniqueuser2@example.com',
         });
     };
@@ -33,7 +32,7 @@ subtest 'Unique constraints' => sub {
     eval {
         my $user3 = $schema->resultset('User')->create({
             username => 'uniqueuser3',
-            password => sha256_hex('password'),
+            password => 'password',
             email    => 'uniqueuser@example.com',
         });
     };
@@ -43,16 +42,15 @@ subtest 'Unique constraints' => sub {
 # Test password encryption
 subtest 'Password encryption' => sub {
     my $password = 'plaintextpassword';
-    my $encrypted_password = sha256_hex($password);
 
     my $user = $schema->resultset('User')->create({
         username => 'encryptionuser',
-        password => $encrypted_password,
+        password => $password,
         email    => 'encryptionuser@example.com',
     });
 
     ok($user, 'User created with encrypted password');
-    is($user->password, $encrypted_password, 'Password is encrypted');
+    ok($user->check_password($password), 'Password is encrypted and verified');
 };
 
 done_testing();

@@ -41,15 +41,12 @@ post '/register' => sub {
         return template 'register' => { 'title' => 'Register', 'error' => 'Passwords do not match' };
     }
     
-    # Encrypt the password
-    my $encrypted_password = sha256_hex($password);
-    
     # Add user registration logic (e.g., save user to database)
     my $schema = get_schema();
     eval {
         $schema->resultset('User')->create({
             username => $username,
-            password => $encrypted_password,
+            password => $password,
             email    => $email,
         });
     };
@@ -79,7 +76,7 @@ post '/login' => sub {
     my $schema = get_schema();
     my $user = $schema->resultset('User')->find({ username => $username });
     
-    if ($user && $user->password eq sha256_hex($password)) {
+    if ($user && $user->check_password($password)) {
         # Log the result of the authentication attempt (success)
         debug "Authentication successful for username: $username"; # Pa940
         

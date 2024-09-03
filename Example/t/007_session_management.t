@@ -7,7 +7,6 @@ use Test::More;
 use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
-use Digest::SHA qw(sha256_hex);
 
 Example::Util::SchemaLoader::load_schema();
 
@@ -15,7 +14,7 @@ Example::Util::SchemaLoader::load_schema();
 my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db');
 $schema->resultset('User')->create({
     username => 'testuser',
-    password => sha256_hex('password'),
+    password => 'password',
     email    => 'testuser@example.com',
 });
 
