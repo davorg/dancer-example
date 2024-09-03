@@ -24,7 +24,7 @@
     [% IF username %]
         <p>Welcome, [% username %]!</p>
         <p>Your email address is [% email %].</p>
-        <form action="/logout" method="post">
+        <form action="/logout" method="get">
             <button type="submit">Logout</button>
         </form>
     [% ELSE %]
