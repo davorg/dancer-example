@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More;
 use Example::Schema;
 use DBIx::Class::Schema::Loader qw/ make_schema_at /;
 use Example::Util::SchemaLoader;
@@ -32,3 +32,5 @@ subtest 'User retrieval' => sub {
     is($user->username, 'testuser', 'Username is correct');
     is($user->email, 'testuser@example.com', 'Email is correct');
 };
+
+done_testing();

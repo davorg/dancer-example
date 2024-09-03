@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More;
 use YAML::XS qw(LoadFile);
 
 # Test loading of config.yml
@@ -17,3 +17,5 @@ is($dev_config->{logger}, 'console', 'Logger is correct for development environm
 my $prod_config = LoadFile('Example/environments/production.yml');
 ok($prod_config, 'Loaded production.yml');
 is($prod_config->{log}, 'warning', 'Log level is correct for production environment');
+
+done_testing();

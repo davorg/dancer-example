@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More;
 use Example::Schema;
 use Digest::SHA qw(sha256_hex);
 use Example::Util::SchemaLoader;
@@ -54,3 +54,5 @@ subtest 'Password encryption' => sub {
     ok($user, 'User created with encrypted password');
     is($user->password, $encrypted_password, 'Password is encrypted');
 };
+
+done_testing();

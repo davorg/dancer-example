@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Example;
-use Test::More tests => 2;
+use Test::More;
 use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
@@ -14,3 +14,5 @@ my $test = Plack::Test->create($app);
 my $res  = $test->request( GET '/' );
 
 ok( $res->is_success, '[GET /] successful' );
+
+done_testing();

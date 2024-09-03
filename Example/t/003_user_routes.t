@@ -3,7 +3,7 @@ use warnings;
 
 use Example;
 use Example::Util::SchemaLoader;
-use Test::More tests => 4;
+use Test::More;
 use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
@@ -40,3 +40,5 @@ $res = $test->request(
     ]
 );
 ok( $res->is_redirect, '[POST /login] redirect after successful login' );
+
+done_testing();
