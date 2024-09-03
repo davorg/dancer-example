@@ -95,3 +95,11 @@ post '/login' => sub {
         return template 'login' => { 'title' => 'Login', 'error' => 'Invalid username or password' };
     }
 };
+
+get '/logout' => sub {
+    # Clear the user session
+    session->destroy;
+    
+    # Redirect to home page after logging out
+    redirect '/';
+};
