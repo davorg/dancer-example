@@ -5,6 +5,9 @@ use Test::More tests => 5;
 use Example::Schema;
 use Digest::SHA qw(sha256_hex);
 
+# Load the schema before running tests
+require 'Example/t/000_load_schema.t';
+
 # Connect to the database
 my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db');
 

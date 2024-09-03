@@ -5,6 +5,9 @@ use Test::More tests => 3;
 use Example::Schema;
 use DBIx::Class::Schema::Loader qw/ make_schema_at /;
 
+# Load the schema before running tests
+require 'Example/t/000_load_schema.t';
+
 # Load the schema
 my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db');
 
