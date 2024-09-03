@@ -67,16 +67,23 @@ post '/login' => sub {
     my $username = body_parameters->get('username');
     my $password = body_parameters->get('password');
     
+    # Log the username and password received in the POST request
+    debug "Received login request for username: $username, password: $password"; # P4645
+    
     # Add user login logic (e.g., authenticate user)
     my $schema = get_schema();
     my $user = $schema->resultset('User')->find({ username => $username });
     
     if ($user && $user->password eq sha256_hex($password)) {
+        # Log the result of the authentication attempt (success)
+        debug "Authentication successful for username: $username"; # Pa940
+        
         # Redirect to home page after successful login
         redirect '/';
     } else {
+        # Log the result of the authentication attempt (failure)
+        debug "Authentication failed for username: $username"; # Pa940
+        
         return template 'login' => { 'title' => 'Login', 'error' => 'Invalid username or password' };
     }
 };
-
-true;
