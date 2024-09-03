@@ -1,4 +1,3 @@
-
 <!--
     Credit goes to the Ruby on Rails team for this page
     has been heavily based on the default Rails page that is
@@ -110,7 +109,6 @@
     });
     </script>
 
-
           <ol>
             <li>
               <h2>Tune your application</h2>
@@ -149,3 +147,10 @@
         </div>
       </div>
     </div>
+
+    [% IF username %]
+        <p>Welcome, [% username %]!</p>
+        <p>Your email address is [% email %].</p>
+    [% ELSE %]
+        <p>You are not logged in.</p>
+    [% END %]
