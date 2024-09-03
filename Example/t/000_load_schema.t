@@ -24,8 +24,19 @@ open my $fh, '<', 'Example/db/schema.sql' or die "Could not open schema file: $!
 my $schema_sql = do { local $/; <$fh> };
 close $fh;
 
-# Execute the schema SQL
-$dbh->do($schema_sql);
+# Split the schema SQL into individual statements
+my @statements = split /;\s*/, $schema_sql;
+
+# Execute each SQL statement one at a time
+for my $statement (@statements) {
+    next unless $statement =~ /\S/;
+    eval {
+        $dbh->do($statement);
+    };
+    if ($@) {
+        die "Error executing SQL statement: $@";
+    }
+}
 
 # Disconnect from the database
 $dbh->disconnect;

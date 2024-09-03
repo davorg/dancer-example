@@ -28,12 +28,18 @@ sub load_schema {
     my $schema_sql = do { local $/; <$fh> };
     close $fh;
 
-    eval {
-        $dbh->do($schema_sql);
-    };
-    if ($@) {
-        $log->error("Error loading schema: $@");
-        die "Error loading schema: $@";
+    my @statements = split /;\s*/, $schema_sql;
+
+    for my $statement (@statements) {
+        next unless $statement =~ /\S/;
+        $log->info("Executing SQL statement: $statement");
+        eval {
+            $dbh->do($statement);
+        };
+        if ($@) {
+            $log->error("Error executing SQL statement: $@");
+            die "Error executing SQL statement: $@";
+        }
     }
 
     $dbh->disconnect;
