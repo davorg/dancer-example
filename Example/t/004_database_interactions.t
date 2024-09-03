@@ -5,7 +5,6 @@ use Test::More;
 use Example::Schema;
 use DBIx::Class::Schema::Loader qw/ make_schema_at /;
 use Example::Util::SchemaLoader;
-use Digest::SHA qw(sha256_hex);
 
 Example::Util::SchemaLoader::load_schema();
 
@@ -15,11 +14,10 @@ my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db')
 # Test user creation in the database
 subtest 'User creation' => sub {
     my $password = 'testpassword';
-    my $encrypted_password = sha256_hex($password);
 
     my $user = $schema->resultset('User')->create({
         username => 'testuser',
-        password => $encrypted_password,
+        password => $password,
         email    => 'testuser@example.com',
     });
 
