@@ -4,8 +4,11 @@ use strict;
 use warnings;
 use DBI;
 use YAML::XS qw(LoadFile);
+use Log::Any qw($log);
 
 sub load_schema {
+    $log->info("Loading schema...");
+
     my $config = LoadFile('Example/config.yml');
     my $dbh = DBI->connect(
         $config->{database}->{dsn},
@@ -18,12 +21,23 @@ sub load_schema {
         }
     );
 
-    open my $fh, '<', 'Example/db/schema.sql' or die "Could not open schema file: $!";
+    open my $fh, '<', 'Example/db/schema.sql' or do {
+        $log->error("Could not open schema file: $!");
+        die "Could not open schema file: $!";
+    };
     my $schema_sql = do { local $/; <$fh> };
     close $fh;
 
-    $dbh->do($schema_sql);
+    eval {
+        $dbh->do($schema_sql);
+    };
+    if ($@) {
+        $log->error("Error loading schema: $@");
+        die "Error loading schema: $@";
+    }
+
     $dbh->disconnect;
+    $log->info("Schema loaded successfully.");
 }
 
 1;
