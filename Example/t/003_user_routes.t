@@ -7,8 +7,25 @@ use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
 
-# Ensure the schema is loaded before running tests
-require 'Example/t/000_load_schema.t';
+# Subroutine to load the schema directly within the test file
+sub load_schema {
+    use DBI;
+    my $dbh = DBI->connect("dbi:SQLite:dbname=Example/db/example.db", "", "", {
+        RaiseError => 1,
+        PrintError => 0,
+        AutoCommit => 1,
+    });
+
+    open my $fh, '<', 'Example/db/schema.sql' or die "Could not open schema file: $!";
+    my $schema_sql = do { local $/; <$fh> };
+    close $fh;
+
+    $dbh->do($schema_sql);
+    $dbh->disconnect;
+}
+
+# Call the new subroutine before running the tests
+load_schema();
 
 my $app = Example->to_app;
 ok( is_coderef($app), 'Got app' );
