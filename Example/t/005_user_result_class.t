@@ -4,26 +4,9 @@ use warnings;
 use Test::More tests => 5;
 use Example::Schema;
 use Digest::SHA qw(sha256_hex);
+use Example::Util::SchemaLoader;
 
-# Subroutine to load the schema directly within the test file
-sub load_schema {
-    use DBI;
-    my $dbh = DBI->connect("dbi:SQLite:dbname=Example/db/example.db", "", "", {
-        RaiseError => 1,
-        PrintError => 0,
-        AutoCommit => 1,
-    });
-
-    open my $fh, '<', 'Example/db/schema.sql' or die "Could not open schema file: $!";
-    my $schema_sql = do { local $/; <$fh> };
-    close $fh;
-
-    $dbh->do($schema_sql);
-    $dbh->disconnect;
-}
-
-# Call the new subroutine before running the tests
-load_schema();
+Example::Util::SchemaLoader::load_schema();
 
 # Connect to the database
 my $schema = Example::Schema->connect('dbi:SQLite:dbname=Example/db/example.db');
