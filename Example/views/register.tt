@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register</title>
+  <link rel="stylesheet" href="[% request.uri_base %]/css/style.css">
 </head>
 <body>
   <h1>Register</h1>
+  [% IF error %]
+    <div class="error-message">[% error %]</div>
+  [% END %]
   <form action="/register" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required><br>
