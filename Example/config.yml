@@ -47,7 +47,9 @@ engines:
 # Default value for 'cookie_name' is 'dancer.session'. If you run multiple
 # Dancer apps on the same host then you will need to make sure 'cookie_name'
 # is different for each app.
-#
+
+session: YAML
+
 engines:
   session:
     YAML:
