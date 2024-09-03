@@ -49,6 +49,7 @@ post '/register' => sub {
         });
     };
     if ($@) {
+        error "Database error: $@"; # Log the database error
         return template 'register' => { 'title' => 'Register', 'error' => 'Failed to register user' };
     }
     
