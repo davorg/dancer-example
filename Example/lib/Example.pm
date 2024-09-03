@@ -1,19 +1,18 @@
 package Example;
 use Dancer2;
-use DBI;
 use Digest::SHA qw(sha256_hex);
+use Example::Schema;
 
 our $VERSION = '0.1';
 
-# Database connection
-sub get_dbh {
-    my $dbh = DBI->connect(
+# Initialize DBIx::Class schema
+sub get_schema {
+    my $schema = Example::Schema->connect(
         config->{database}->{dsn},
         config->{database}->{username},
         config->{database}->{password},
-        { RaiseError => 1, PrintError => 0, AutoCommit => 1 }
     );
-    return $dbh;
+    return $schema;
 }
 
 get '/' => sub {
@@ -41,10 +40,13 @@ post '/register' => sub {
     my $encrypted_password = sha256_hex($password);
     
     # Add user registration logic (e.g., save user to database)
-    my $dbh = get_dbh();
+    my $schema = get_schema();
     eval {
-        my $sth = $dbh->prepare('INSERT INTO users (username, password, email) VALUES (?, ?, ?)');
-        $sth->execute($username, $encrypted_password, $email);
+        $schema->resultset('User')->create({
+            username => $username,
+            password => $encrypted_password,
+            email    => $email,
+        });
     };
     if ($@) {
         return template 'register' => { 'title' => 'Register', 'error' => 'Failed to register user' };
@@ -65,12 +67,10 @@ post '/login' => sub {
     my $password = body_parameters->get('password');
     
     # Add user login logic (e.g., authenticate user)
-    my $dbh = get_dbh();
-    my $sth = $dbh->prepare('SELECT password FROM users WHERE username = ?');
-    $sth->execute($username);
-    my ($stored_password) = $sth->fetchrow_array();
+    my $schema = get_schema();
+    my $user = $schema->resultset('User')->find({ username => $username });
     
-    if ($stored_password && $stored_password eq sha256_hex($password)) {
+    if ($user && $user->password eq sha256_hex($password)) {
         # Redirect to home page after successful login
         redirect '/';
     } else {
