@@ -7,6 +7,9 @@ use Plack::Test;
 use HTTP::Request::Common;
 use Ref::Util qw<is_coderef>;
 
+# Ensure the schema is loaded before running tests
+require 'Example/t/000_load_schema.t';
+
 my $app = Example->to_app;
 ok( is_coderef($app), 'Got app' );
 
