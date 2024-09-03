@@ -6,6 +6,7 @@ use Example::Util::SchemaLoader;
 use Test::More;
 use Plack::Test;
 use HTTP::Request::Common;
+use HTTP::Cookies;
 use Ref::Util qw<is_coderef>;
 
 Example::Util::SchemaLoader::load_schema();
@@ -21,7 +22,8 @@ $schema->resultset('User')->create({
 my $app = Example->to_app;
 ok( is_coderef($app), 'Got app' );
 
-my $test = Plack::Test->create($app);
+my $cookie_jar = HTTP::Cookies->new;
+my $test = Plack::Test->create($app, cookie_jar => $cookie_jar);
 
 # Test session creation
 my $res = $test->request(
