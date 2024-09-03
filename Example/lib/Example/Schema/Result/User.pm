@@ -19,6 +19,10 @@ __PACKAGE__->add_columns(
     'password' => {
         data_type => 'text',
         is_nullable => 0,
+        encode_column => 1,
+        encode_class  => 'Digest',
+        encode_args   => { algorithm => 'SHA-256' },
+        encode_check_method => 'check_password',
     },
     'email' => {
         data_type => 'text',
