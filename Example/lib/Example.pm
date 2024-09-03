@@ -98,7 +98,7 @@ post '/login' => sub {
 
 get '/logout' => sub {
     # Clear the user session
-    session->destroy;
+    app->destroy_session;
     
     # Redirect to home page after logging out
     redirect '/';
