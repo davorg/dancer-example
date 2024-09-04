@@ -87,4 +87,11 @@ like( $res->content, qr/Invalid username or password/, 'Wrong password error mes
 $res = $test->request( GET '/logout' );
 ok( $res->is_redirect, '[GET /logout] redirect after logout' );
 
+# Test Google OAuth2 authentication routes
+$res = $test->request( GET '/auth/google' );
+ok( $res->is_redirect, '[GET /auth/google] redirect to Google OAuth2' );
+
+$res = $test->request( GET '/auth/google/callback?code=valid_code' );
+ok( $res->is_redirect, '[GET /auth/google/callback] redirect after successful Google OAuth2 callback' );
+
 done_testing();

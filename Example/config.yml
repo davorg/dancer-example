@@ -60,3 +60,20 @@ database:
   dsn: "dbi:SQLite:dbname=Example/db/example.db"
   username: ""
   password: ""
+
+# Google OAuth2 configuration
+oauth:
+  google:
+    client_id: "YOUR_GOOGLE_CLIENT_ID"
+    client_secret: "YOUR_GOOGLE_CLIENT_SECRET"
+    redirect_uri: "http://localhost:3000/auth/google/callback"
+    scope: "email profile"
+
+# To get the Google client id and Google client secret values, follow these steps:
+# 1. Go to the Google Cloud Console: https://console.cloud.google.com/
+# 2. Create a new project or select an existing project.
+# 3. Navigate to the "Credentials" page from the left-hand menu.
+# 4. Click on "Create credentials" and select "OAuth 2.0 Client IDs".
+# 5. Configure the OAuth consent screen if you haven't already.
+# 6. Fill in the required information and set the redirect URI to "http://localhost:3000/auth/google/callback".
+# 7. After creating the credentials, you will see the client ID and client secret values.
