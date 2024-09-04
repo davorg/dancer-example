@@ -36,7 +36,7 @@
         <div class="card">
           <div class="card-body">
             <p>You are not logged in.</p>
-            <div class="d-flex justify-content-between">
+            <div>
               <a href="/login" class="btn btn-primary me-2">Login</a>
               <a href="/register" class="btn btn-secondary">Register</a>
             </div>
