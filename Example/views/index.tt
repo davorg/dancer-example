@@ -1,38 +1,50 @@
-<!--
-    Credit goes to the Ruby on Rails team for this page
-    has been heavily based on the default Rails page that is
-    built with a scaffolded application.
-
-    Thanks a lot to them for their work.
-
-    See Ruby on Rails if you want a kickass framework in Ruby:
-    http://www.rubyonrails.org/
--->
-
-<div id="page">
-      <div id="content">
-        <div id="header">
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
           <h1>Welcome to the Example Application</h1>
         </div>
-
-        <div id="description">
+        <div class="card-body">
           <p>This is a sample application built with Perl Dancer2 framework.</p>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    [% IF session.user %]
-        <p>Welcome, [% session.user.username %]!</p>
-        <p>Your email address is [% session.user.email %].</p>
-        <form action="/logout" method="get">
-            <button type="submit">Logout</button>
-        </form>
-    [% ELSE %]
-        <p>You are not logged in.</p>
-        <form action="/login" method="get">
-            <button type="submit">Login</button>
-        </form>
-        <form action="/register" method="get">
-            <button type="submit">Register</button>
-        </form>
-    [% END %]
+[% IF session.user %]
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <p>Welcome, [% session.user.username %]!</p>
+            <p>Your email address is [% session.user.email %].</p>
+            <form action="/logout" method="get">
+              <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+[% ELSE %]
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <p>You are not logged in.</p>
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <form action="/register" method="get">
+              <button type="submit" class="btn btn-secondary">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+[% END %]
