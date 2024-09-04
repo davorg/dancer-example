@@ -12,4 +12,5 @@
     <input type="password" id="password" name="password" class="form-control" required>
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
+  <a href="/" class="btn btn-secondary">Cancel</a>
 </form>
