@@ -2,6 +2,7 @@ package Example;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 use Example::Schema;
+use Net::OAuth2::Profile::WebServer;
 
 our $VERSION = '0.1';
 
@@ -13,6 +14,18 @@ sub get_schema {
         config->{database}->{password},
     );
     return $schema;
+}
+
+# Initialize Google OAuth2 client
+sub get_google_oauth_client {
+    return Net::OAuth2::Profile::WebServer->new(
+        client_id     => config->{oauth}->{google}->{client_id},
+        client_secret => config->{oauth}->{google}->{client_secret},
+        site          => 'https://accounts.google.com',
+        authorize_path => '/o/oauth2/auth',
+        access_token_path => '/o/oauth2/token',
+        redirect_uri  => config->{oauth}->{google}->{redirect_uri},
+    );
 }
 
 get '/' => sub {
@@ -64,28 +77,44 @@ post '/login' => sub {
     my $username = body_parameters->get('username');
     my $password = body_parameters->get('password');
     
-    # Log the username and password received in the POST request
-    debug "Received login request for username: $username, password: $password"; # P4645
-    
     # Add user login logic (e.g., authenticate user)
     my $schema = get_schema();
     my $user = $schema->resultset('User')->find({ username => $username });
     
     if ($user && $user->check_password($password)) {
-        # Log the result of the authentication attempt (success)
-        debug "Authentication successful for username: $username"; # Pa940
-        
         # Store user information in session
         session user => { username => $user->username, email => $user->email };
         
         # Redirect to home page after successful login
         redirect '/';
     } else {
-        # Log the result of the authentication attempt (failure)
-        debug "Authentication failed for username: $username"; # Pa940
-        
         return template 'login' => { 'title' => 'Login', 'error' => 'Invalid username or password' };
     }
+};
+
+get '/auth/google' => sub {
+    my $client = get_google_oauth_client();
+    redirect $client->authorize_url(
+        scope => config->{oauth}->{google}->{scope},
+        response_type => 'code',
+    );
+};
+
+get '/auth/google/callback' => sub {
+    my $client = get_google_oauth_client();
+    my $code = query_parameters->get('code');
+    my $token = $client->get_access_token($code);
+    my $response = $client->get('https://www.googleapis.com/oauth2/v1/userinfo', { Authorization => "Bearer " . $token->access_token });
+    my $user_info = from_json($response->content);
+    
+    my $schema = get_schema();
+    my $user = $schema->resultset('User')->find_or_create({
+        google_id => $user_info->{id},
+        email     => $user_info->{email},
+    });
+    
+    session user => { username => $user->username, email => $user->email };
+    redirect '/';
 };
 
 get '/logout' => sub {

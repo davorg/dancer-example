@@ -14,3 +14,7 @@
   <button type="submit" class="btn btn-primary">Login</button>
   <a href="/" class="btn btn-secondary">Cancel</a>
 </form>
+
+<div class="mt-3">
+  <a href="/auth/google" class="btn btn-danger">Login with Google</a>
+</div>
