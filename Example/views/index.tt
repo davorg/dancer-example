@@ -36,12 +36,10 @@
         <div class="card">
           <div class="card-body">
             <p>You are not logged in.</p>
-            <form action="/login" method="get">
-              <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-            <form action="/register" method="get">
-              <button type="submit" class="btn btn-secondary">Register</button>
-            </form>
+            <div class="d-flex justify-content-between">
+              <a href="/login" class="btn btn-primary me-2">Login</a>
+              <a href="/register" class="btn btn-secondary">Register</a>
+            </div>
           </div>
         </div>
       </div>
