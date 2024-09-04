@@ -20,4 +20,5 @@
     <input type="email" id="email" name="email" class="form-control" required>
   </div>
   <button type="submit" class="btn btn-primary">Register</button>
+  <a href="/" class="btn btn-secondary">Cancel</a>
 </form>
