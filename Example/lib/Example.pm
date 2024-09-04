@@ -94,7 +94,7 @@ post '/login' => sub {
 
 get '/auth/google' => sub {
     my $client = get_google_oauth_client();
-    redirect $client->authorize_url(
+    redirect $client->authorize(
         scope => config->{oauth}->{google}->{scope},
         response_type => 'code',
     );
