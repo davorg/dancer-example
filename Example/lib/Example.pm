@@ -16,12 +16,7 @@ sub get_schema {
 }
 
 get '/' => sub {
-    my $user = session('user');
-    if ($user) {
-        template 'index' => { 'title' => 'Example', 'username' => $user->{username}, 'email' => $user->{email} };
-    } else {
-        template 'index' => { 'title' => 'Example' };
-    }
+    template 'index' => { 'title' => 'Example' };
 };
 
 get '/register' => sub {

@@ -21,9 +21,9 @@
       </div>
     </div>
 
-    [% IF username %]
-        <p>Welcome, [% username %]!</p>
-        <p>Your email address is [% email %].</p>
+    [% IF session.user %]
+        <p>Welcome, [% session.user.username %]!</p>
+        <p>Your email address is [% session.user.email %].</p>
         <form action="/logout" method="get">
             <button type="submit">Logout</button>
         </form>

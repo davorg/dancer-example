@@ -20,7 +20,7 @@
 Powered by Example
 </div>
 
-[% IF username %]
+[% IF session.user %]
     <form action="/logout" method="get">
         <button type="submit">Logout</button>
     </form>
