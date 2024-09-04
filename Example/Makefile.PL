@@ -21,6 +21,7 @@ WriteMakefile(
         'YAML'       => 0,
         'Dancer2'     => 1.1.1,
         'DBIx::Class' => 0,
+        'Net::OAuth2::Profile::WebServer' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Example-*' },
